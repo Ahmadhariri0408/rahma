@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100d28">
+<title>A Little Universe for Rahma ✨</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+:root { --pink:#ffc8e5; --purple:#bba4ff; --white:#fff6ff; }
+* { box-sizing:border-box; }
+body { margin:0; background:#100d28; color:white; font-family:'Cairo',sans-serif; overflow-x:hidden; min-height:100vh; }
+button { font-family:inherit; }
+#universe {
+  position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  background:radial-gradient(ellipse at 50% 100%,#38234f 0%,transparent 55%),
+  radial-gradient(ellipse at 15% 20%,#30234c 0%,transparent 50%),
+  linear-gradient(150deg,#09091d,#17102f,#100d28);
+}
+.star { position:absolute; color:white; animation:twinkle var(--speed) infinite alternate; opacity:.7; }
+@keyframes twinkle { from {opacity:.2;transform:scale(.7)} to {opacity:1;transform:scale(1.4)} }
+.shooting { position:absolute; width:100px; height:1px; background:linear-gradient(90deg,white,transparent); transform:rotate(-35deg); animation:shoot 2s linear forwards; }
+@keyframes shoot { from {transform:translate(0,0) rotate(-35deg);opacity:1} to {transform:translate(-300px,200px) rotate(-35deg);opacity:0} }
+.screen { display:none; position:relative; z-index:2; min-height:100svh; padding:35px 20px; align-items:center; justify-content:center; flex-direction:column; text-align:center; animation:fade .9s ease; }
+.screen.active {display:flex}
+@keyframes fade { from {opacity:0;transform:translateY(15px)} to {opacity:1;transform:translateY(0)} }
+.eyebrow { font-size:12px; letter-spacing:3px; color:#c9b6e9; margin-bottom:15px; }
+h1 { font-size:clamp(35px,9vw,57px); color:var(--pink); text-shadow:0 0 30px #e8a6dd; margin:8px 0; font-weight:700; }
+h2 { color:#f8d6ef; font-size:27px; margin:10px; }
+p { line-height:2.1; color:#e7d9f2; }
+.moon { font-size:75px; margin-bottom:15px; filter:drop-shadow(0 0 25px #ffe8b4); animation:float 4s ease-in-out infinite; }
+@keyframes float { 0%,100% {transform:translateY(0)} 50% {transform:translateY(-13px)} }
+.glow-button { color:white; background:linear-gradient(110deg,#bd87d7,#8069c7); border:1px solid #f4c9ef; border-radius:40px; padding:13px 30px; font-size:15px; cursor:pointer; box-shadow:0 0 25px #bd87d755; transition:.3s; margin-top:20px; }
+.glow-button:hover {transform:scale(1.06);box-shadow:0 0 35px #e7b9ff}
+.small-button { background:#ffffff12; color:#f6dff4; border:1px solid #ffffff35; border-radius:30px; padding:9px 20px; margin-top:15px; cursor:pointer; }
+.note { max-width:390px; width:100%; padding:25px 22px; border:1px solid #ffffff24; border-radius:24px; background:linear-gradient(140deg,#ffffff12,#ffffff05); backdrop-filter:blur(15px); box-shadow:0 15px 50px #0003; }
+.envelope { position:relative; width:210px; height:145px; margin:35px auto; background:linear-gradient(135deg,#dba6d6,#8065b5); border-radius:7px; cursor:pointer; box-shadow:0 0 35px #dca6e766; transition:.5s; }
+.envelope:before { content:""; position:absolute; top:0; left:0; border-left:105px solid transparent; border-right:105px solid transparent; border-top:85px solid #f0c4e5; transform-origin:top; transition:.8s; z-index:3; }
+.envelope:after { content:"♡"; position:absolute; z-index:4; top:55px; left:85px; color:white; font-size:35px; }
+.envelope.open:before { transform:rotateX(180deg); }
+.letter { display:none; background:#fff1ed; color:#61486a; border-radius:15px; padding:23px; max-width:360px; width:100%; line-height:2.1; animation:fade 1s; box-shadow:0 0 35px #f5c9ed55; }
+.letter p {color:#71586e}
+.star-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; max-width:370px; width:100%; margin:25px auto; }
+.wish-star { background:#ffffff0c; border:1px solid #ffffff28; border-radius:18px; min-height:75px; color:#ffe7ac; font-size:30px; cursor:pointer; transition:.3s; }
+.wish-star:hover { background:#e8c5ff25; transform:translateY(-5px) scale(1.05); }
+.wish-star.done { background:#eac3ff25; border-color:#edb9ee; box-shadow:0 0 20px #e7a9ed55; }
+.wish-message { min-height:90px; max-width:390px; width:100%; padding:18px; border:1px solid #ffffff24; border-radius:20px; background:#ffffff0c; color:#ffe5f4; display:flex; align-items:center; justify-content:center; line-height:2; }
+.flower-garden { display:flex; flex-wrap:wrap; justify-content:center; gap:13px; max-width:370px; margin:25px auto; }
+.flower { width:72px; height:72px; border-radius:50%; border:1px solid #ffc9e466; background:#ffffff10; color:#ffd8f1; font-size:34px; cursor:pointer; transition:.4s; }
+.flower:hover { transform:rotate(15deg) scale(1.2); background:#f6bce733; }
+.garden-message { min-height:65px; max-width:380px; line-height:2; color:#ffe4f3; }
+.end-card { max-width:390px; padding:28px 23px; border-radius:25px; background:linear-gradient(145deg,#ffffff18,#ffffff07); border:1px solid #ffffff30; box-shadow:0 0 40px #d6a3e533; }
+footer { color:#a99abe; font-size:11px; margin-top:30px; }
+#sound { position:fixed; top:15px; left:15px; z-index:10; background:#ffffff16; color:white; border:1px solid #ffffff33; padding:9px 13px; border-radius:30px; cursor:pointer; }
+.confetti { position:fixed; pointer-events:none; z-index:20; animation:fall 3s linear forwards; }
+@keyframes fall { to {transform:translateY(100vh) rotate(500deg);opacity:0} }
+
+.memory-wrap{width:min(920px,100%);margin:12px auto 22px}
+.memory-intro{max-width:620px;margin:0 auto 22px}
+.memory-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;width:100%}
+.memory-photo{margin:0;padding:10px 10px 15px;background:linear-gradient(145deg,#fff9ff,#f3e8ff);border-radius:12px;box-shadow:0 12px 30px #0005;transform:rotate(var(--tilt));transition:transform .35s}
+.memory-photo:hover{transform:translateY(-6px) rotate(0deg)}
+.memory-photo img{display:block;width:100%;height:300px;object-fit:cover;border-radius:7px}
+.memory-photo figcaption{color:#755b80;font-size:13px;padding-top:10px}
+.memory-video-card{max-width:390px;width:100%;margin:22px auto 8px;padding:12px;border:1px solid #ffffff30;border-radius:22px;background:#ffffff12;box-shadow:0 12px 35px #0004}
+.memory-video-card video{width:100%;max-height:520px;object-fit:contain;background:#090817;border-radius:14px;display:block}
+.memory-video-card p{font-size:13px;margin:8px 0 0}
+@media(max-width:520px){.memory-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.memory-photo{padding:7px 7px 11px}.memory-photo img{height:230px}.memory-photo figcaption{font-size:11px}}
+
+</style>
+</head>
+<body>
+<div id="universe"></div>
+
+<audio id="backgroundMusic" loop preload="auto">
+  <source src="layla.m4a" type="audio/mp4">
+</audio>
+<button id="sound" onclick="toggleSound()">♫ تشغيل</button>
+
+<section class="screen active" id="home">
+  <div class="moon">☾</div>
+  <div class="eyebrow">A LITTLE UNIVERSE FOR YOU</div>
+  <h1>رحومتي ♡</h1>
+  <p>في حاجات جميلة مش محتاجة مناسبة عشان تتقدم...<br>ودي واحدة صغيرة من الحاجات دي.</p>
+  <button class="glow-button" onclick="startMusic(); go('intro')">عندك مفاجأة صغيرة ✨</button>
+  <footer>Made with care, just for you ♡</footer>
+</section>
+
+<section class="screen" id="intro">
+  <div class="moon">🌙</div>
+  <div class="eyebrow">A SPECIAL PLACE</div>
+  <h2>أهلًا بيكي في عالمك الصغير</h2>
+  <p>الليلة دي مختلفة شوية...<br>لأن كل تفصيلة هنا وراها أمنية حلوة ليكي.<br>مفيش حاجة مطلوبة منك غير إنك تستمتعي.</p>
+  <button class="glow-button" onclick="go('letterScreen')">كمّلي الرحلة ♡</button>
+</section>
+
+<section class="screen" id="letterScreen">
+  <div class="eyebrow">A LITTLE SECRET</div>
+  <h2>في رسالة مستنياكي 💌</h2>
+  <p>اضغطي على الظرف عشان تفتحيه</p>
+  <div class="envelope" id="envelope" onclick="openLetter()"></div>
+  <div class="letter" id="letter">
+    <div style="font-size:27px">🌷</div>
+    <strong>إلى رحمة...</strong>
+    <p>يمكن الكلام ده بسيط، بس حبيت أعملك حاجة مختلفة، حاجة تفكّرك إنك إنسانة غالية، وإن وجودك في حياة الناس ممكن يسيب أثر جميل من غير ما تحسي.<br><br>أتمنى أيامك تكون مليانة راحة وطمأنينة، وتفضلي دايمًا بخير، وتلاقي في كل يوم سبب جديد للابتسامة.<br><br>دي مجرد مساحة صغيرة من الأمنيات الحلوة اللي تستاهليها. 🤍</p>
+    <strong>خلي بالك من نفسك يا رحومتي ♡</strong>
+  </div>
+  <button class="glow-button" id="letterNext" style="display:none" onclick="go('starsScreen')">شوفي نجومك ✨</button>
+</section>
+
+<section class="screen" id="starsScreen">
+  <div class="eyebrow">YOUR EIGHT LITTLE WISHES</div>
+  <h2>اختاري نجمة من السما ✨</h2>
+  <p>كل نجمة مخبّية أمنية ليكي، اكتشفيهم كلهم.</p>
+  <div class="star-grid" id="starGrid"></div>
+  <div class="wish-message" id="wishMessage">لسه في 8 أمنيات مستنياكي ⭐</div>
+  <p id="starCount">0 / 8</p>
+  <button class="glow-button" id="starNext" style="display:none" onclick="go('garden')">اكتشفي حديقة الأمنيات 🌸</button>
+</section>
+
+<section class="screen" id="garden">
+  <div class="eyebrow">A GARDEN OF GOOD WISHES</div>
+  <h2>حديقة الأمنيات 🌸</h2>
+  <p>كل وردة وراها دعوة حلوة ليكي، اختاري وردتك.</p>
+  <div class="flower-garden" id="flowers"></div>
+  <div class="garden-message" id="gardenMessage">يا ترى أي وردة هتختاري؟ 🌷</div>
+  <button class="glow-button" id="gardenNext" style="display:none" onclick="go('memories')">شوية ذكريات حلوة 🤍</button>
+</section>
+
+
+
+<section class="screen" id="memories">
+  <div class="eyebrow">A FEW BEAUTIFUL MOMENTS</div>
+  <h2>لحظات تستاهل تفضل 🤍</h2>
+  <div class="memory-intro">
+    <p>في صور بتفضل حلوة مش بس عشان شكلها...<br>لكن عشان اللحظة اللي وراها والابتسامة اللي فيها. ✨</p>
+    <p>وأتمنى تفضلي دايمًا شايفة الجمال اللي فيكي، وتكون أيامك مليانة ضحكة وراحة بال. 🌷</p>
+  </div>
+  <div class="memory-wrap">
+    <div class="memory-gallery memory-gallery-two">
+      <figure class="memory-photo memory-reveal" style="--tilt:-2deg;--delay:.15s">
+        <img src="memories/rahma-photo-1.jpeg" alt="ذكرى جميلة لرحمة" loading="lazy">
+        <figcaption>تفصيلة حلوة من يوم جميل ♡</figcaption>
+      </figure>
+      <figure class="memory-photo memory-reveal" style="--tilt:1.5deg;--delay:.55s">
+        <img src="memories/rahma-photo-2.jpeg" alt="ابتسامة رحمة" loading="lazy">
+        <figcaption>ابتسامة تستاهل كل الخير 🌷</figcaption>
+      </figure>
+    </div>
+  </div>
+  <button class="glow-button" onclick="go('ending')">آخر مفاجأة ليكي 🤍</button>
+</section>
+
+<section class="screen" id="ending">
+  <div class="moon">✨</div>
+  <div class="eyebrow">ONE LAST THING</div>
+  <div class="end-card">
+    <div style="font-size:45px">🫂</div>
+    <h2>قبل ما تمشي يا رحومتي...</h2>
+    <p>مش لازم يكون عندنا كلام كتير عشان نتمنى الخير لحد عزيز علينا.<br><br>بس حبيت أقولك إنك تستاهلي كل حاجة حلوة، وإن ربنا يرزقك راحة البال، ويجبر خاطرك جبرًا يليق بقلبك، ويخلي الضحكة دايمًا قريبة منك.<br><br>ولو احتجتي يوم تفتكري إن في حد بيتمنالك الخير من قلبه، افتكري إن فيه صفحة صغيرة اتعملت مخصوص عشانك. 🤍</p>
+    <h2>خليكي دايمًا بخير ♡</h2>
+    <div style="font-size:27px">🌙 ✨ 🌷</div>
+  </div>
+  <button class="small-button" onclick="go('home')">عودي لعالم النجوم ↺</button>
+  <footer>With kindness, always ♡</footer>
+</section>
+
+<script>
+// إنشاء النجوم في الخلفية
+const universe = document.getElementById('universe');
+for(let i=0;i<110;i++){
+  const s=document.createElement('span');
+  s.className='star'; s.textContent=Math.random()>.5?'✦':'·';
+  s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+  s.style.fontSize=(5+Math.random()*13)+'px';
+  s.style.setProperty('--speed',(1+Math.random()*4)+'s');
+  universe.appendChild(s);
+}
+function shootingStar(){
+  const s=document.createElement('div'); s.className='shooting';
+  s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*60+'%';
+  universe.appendChild(s); setTimeout(()=>s.remove(),2100);
+}
+setInterval(shootingStar,3500);
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function openLetter(){
+  const envelope=document.getElementById('envelope');
+  if(envelope.classList.contains('open'))return;
+  envelope.classList.add('open');
+  setTimeout(()=>{
+    document.getElementById('letter').style.display='block';
+    document.getElementById('letterNext').style.display='inline-block';
+    confetti();
+  },700);
+}
+
+const wishes=[
+"يارب كل يوم في حياتك يكون فيه حاجة تفرّح قلبك 🤍",
+"ربنا يبعد عنك كل حزن ويعوّضك عن أي تعب 🌷",
+"أتمنى تفضلي محاطة بناس صادقة بتحبلك الخير 🫂",
+"ربنا يحققلك حاجة حلوة كنتِ مستنياها من زمان ✨",
+"يارب قلبك يعرف الطمأنينة وما يشيلش هم بكرة 🌙",
+"خليكي دايمًا فاكرة إنك تستاهلي التقدير والاهتمام 💗",
+"ربنا يكتبلك خطوات كلها توفيق ونجاح 🌸",
+"أتمنى ضحكتك تفضل موجودة مهما اتغيرت الأيام ⭐"
+];
+let discovered=new Set();
+const starGrid=document.getElementById('starGrid');
+wishes.forEach((wish,i)=>{
+  const b=document.createElement('button'); b.className='wish-star'; b.textContent='✦';
+  b.onclick=()=>{
+    document.getElementById('wishMessage').textContent=wish;
+    b.classList.add('done'); b.textContent='✧'; discovered.add(i);
+    document.getElementById('starCount').textContent=discovered.size+' / 8';
+    if(discovered.size===8){
+      document.getElementById('wishMessage').textContent='اكتشفتي كل النجوم! يا رب كل الأمنيات دي تتحقق ليكي 🤍';
+      document.getElementById('starNext').style.display='inline-block'; confetti();
+    }
+  };
+  starGrid.appendChild(b);
+});
+
+const flowers=[
+  ['🌷','ربنا يرزقك أيام هادية وجميلة.'],
+  ['🌸','يا رب كل خطوة ليكي تكون فيها بركة.'],
+  ['🌹','تستاهلي كلام حلو وأفعال أحلى.'],
+  ['🌼','ربنا يفرّح قلبك من حيث لا تحتسبي.'],
+  ['🪻','أتمنى كل أحلامك تلاقي طريقها للنور.'],
+  ['🌺','ربنا يحفظلك كل شخص غالي على قلبك.']
+];
+const flowerBox=document.getElementById('flowers');
+let flowerCount=0;
+flowers.forEach(([emoji,text])=>{
+  const b=document.createElement('button'); b.className='flower'; b.textContent=emoji;
+  b.onclick=()=>{
+    document.getElementById('gardenMessage').textContent=text;
+    b.style.transform='scale(1.2) rotate(15deg)'; flowerCount++;
+    if(flowerCount===flowers.length){
+      document.getElementById('gardenMessage').textContent='خلصت الورود، بس الأمنيات الحلوة ليكي ملهاش نهاية. 🤍';
+      document.getElementById('gardenNext').style.display='inline-block'; confetti();
+    }
+  };
+  flowerBox.appendChild(b);
+});
+
+function confetti(){
+  const symbols=['✦','♡','✧','🌸','✨'];
+  for(let i=0;i<28;i++){
+    const el=document.createElement('span'); el.className='confetti';
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left=Math.random()*100+'vw'; el.style.top='-20px';
+    el.style.fontSize=(15+Math.random()*18)+'px';
+    el.style.animationDuration=(2+Math.random()*2)+'s';
+    document.body.appendChild(el); setTimeout(()=>el.remove(),4000);
+  }
+}
+
+// أغنية ليلى - كايروكي
+const backgroundMusic=document.getElementById('backgroundMusic');
+let musicPlaying=false;
+
+function startMusic(){
+  backgroundMusic.volume=0.5;
+  backgroundMusic.play().then(()=>{
+    musicPlaying=true;
+    document.getElementById('sound').textContent='♫ إيقاف';
+  }).catch(error=>{
+    console.log('تعذر تشغيل الأغنية:',error);
+    document.getElementById('sound').textContent='♫ اضغطي للتشغيل';
+  });
+}
+function toggleSound(){
+  const btn=document.getElementById('sound');
+  if(musicPlaying){
+    backgroundMusic.pause(); musicPlaying=false; btn.textContent='♫ تشغيل';
+  }else{
+    backgroundMusic.play().then(()=>{
+      musicPlaying=true; btn.textContent='♫ إيقاف';
+    }).catch(error=>console.log('تعذر تشغيل الأغنية:',error));
+  }
+}
+backgroundMusic.addEventListener('pause',()=>{ musicPlaying=false; });
+backgroundMusic.addEventListener('play',()=>{ musicPlaying=true; });
+</script>
+</body>
+</html>
